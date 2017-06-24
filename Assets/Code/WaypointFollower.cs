@@ -12,6 +12,7 @@ public class WaypointFollower : MonoBehaviour
     public float m_turningSpeed;
     public float m_timeToWaitAtWaypoint;
     public Color[] m_lightStates;
+    public GameObject m_mouthPS;
 
     private List<Vector3> m_wayPoints;
     private NavMeshAgent m_agent;
@@ -97,7 +98,10 @@ public class WaypointFollower : MonoBehaviour
 
                 //check for player
                 if (CheckConeOfVIsion(10, 60, 120, 10))
+                {
+                    m_mouthPS.SetActive(true);
                     m_chasing = true;
+                }
             }
             else
             {

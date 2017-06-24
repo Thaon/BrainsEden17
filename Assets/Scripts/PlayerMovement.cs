@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     private NavMeshAgent agent;
     private PersistentData m_pData;
+    private Animator m_anim;
 
     public float m_petrol;
 
@@ -19,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     {
 		agent = GetComponent <NavMeshAgent> ();
         m_pData = FindObjectOfType<PersistentData>();
+        m_anim = GetComponentInChildren<Animator>();
 
         m_petrol = m_pData.m_maxPetrol;
 	}
@@ -52,6 +54,8 @@ public class PlayerMovement : MonoBehaviour
                 m_pData.m_gameState = GameState.Paused;
             }
         }
+
+        m_anim.SetFloat("Speed", agent.velocity.magnitude);
 	}
 
     void OnCollisionEnter(Collision collision)
