@@ -56,32 +56,35 @@ public class WaypointFollower : MonoBehaviour
 	
 	void Update ()
     {
-        Vector3 pos = transform.position;
-        Vector3 des = m_agent.destination;
-        pos.y = 0;
-        des.y = 0;
-
-        if ((pos - des).magnitude < 0.5f && m_isMoving)
+        if (FindObjectOfType<PersistentData>().GetGameState() == GameState.Playing)
         {
-            //increase counter and reset if necessary
-            m_waypointCounter++;
-            if (m_waypointCounter == m_wayPoints.Count)
-                m_waypointCounter = 0;
-            
-            //change destination
-            m_agent.SetDestination(m_wayPoints[m_waypointCounter]);
+            Vector3 pos = transform.position;
+            Vector3 des = m_agent.destination;
+            pos.y = 0;
+            des.y = 0;
 
-            //pause and then start moving again (could play looking around animation here..)
-            m_isMoving = false;
-            m_agent.Stop();
-            StartCoroutine(GoToNextWaypoint());
-        }
+            if ((pos - des).magnitude < 0.5f && m_isMoving)
+            {
+                //increase counter and reset if necessary
+                m_waypointCounter++;
+                if (m_waypointCounter == m_wayPoints.Count)
+                    m_waypointCounter = 0;
 
-        //smoothly change direction if not moving
-        if (m_agent.velocity.magnitude == 0)
-        {
-            Vector3 direction = (m_agent.destination - transform.position).normalized;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), m_turningSpeed * Time.deltaTime);
+                //change destination
+                m_agent.SetDestination(m_wayPoints[m_waypointCounter]);
+
+                //pause and then start moving again (could play looking around animation here..)
+                m_isMoving = false;
+                m_agent.Stop();
+                StartCoroutine(GoToNextWaypoint());
+            }
+
+            //smoothly change direction if not moving
+            if (m_agent.velocity.magnitude == 0)
+            {
+                Vector3 direction = (m_agent.destination - transform.position).normalized;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), m_turningSpeed * Time.deltaTime);
+            }
         }
     }
 
