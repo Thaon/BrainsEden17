@@ -11,11 +11,15 @@ public class WaypointFollower : MonoBehaviour
     public float m_speed;
     public float m_turningSpeed;
     public float m_timeToWaitAtWaypoint;
+    public Color[] m_lightStates;
 
     private List<Vector3> m_wayPoints;
     private NavMeshAgent m_agent;
     private int m_waypointCounter = 0;
     private bool m_isMoving = false;
+    private bool m_chasing = false;
+    private GameObject m_player;
+    private Light m_light;
 
     #endregion
 
@@ -24,6 +28,8 @@ public class WaypointFollower : MonoBehaviour
         //initialize stuff
         m_wayPoints = new List<Vector3>();
         m_agent = GetComponent<NavMeshAgent>();
+        m_player = GameObject.FindWithTag("Player");
+        m_light = GetComponentInChildren<Light>();
 
         //make checks
         if (m_agent == null)
@@ -31,6 +37,7 @@ public class WaypointFollower : MonoBehaviour
 
         //fill in data
         m_agent.updateRotation = false;
+        m_light.color = m_lightStates[0];
 
         foreach(Transform tran in GetComponentsInChildren<Transform>())
         {
@@ -63,28 +70,48 @@ public class WaypointFollower : MonoBehaviour
             pos.y = 0;
             des.y = 0;
 
-            if ((pos - des).magnitude < 0.5f && m_isMoving)
+            if (!m_chasing)
             {
-                //increase counter and reset if necessary
-                m_waypointCounter++;
-                if (m_waypointCounter == m_wayPoints.Count)
-                    m_waypointCounter = 0;
+                if ((pos - des).magnitude < 0.5f && m_isMoving)
+                {
+                    //increase counter and reset if necessary
+                    m_waypointCounter++;
+                    if (m_waypointCounter == m_wayPoints.Count)
+                        m_waypointCounter = 0;
 
-                //change destination
-                m_agent.SetDestination(m_wayPoints[m_waypointCounter]);
+                    //change destination
+                    m_agent.SetDestination(m_wayPoints[m_waypointCounter]);
 
-                //pause and then start moving again (could play looking around animation here..)
-                m_isMoving = false;
-                m_agent.Stop();
-                StartCoroutine(GoToNextWaypoint());
+                    //pause and then start moving again (could play looking around animation here..)
+                    m_isMoving = false;
+                    m_agent.Stop();
+                    StartCoroutine(GoToNextWaypoint());
+                }
+
+                //smoothly change direction if not moving
+                if (m_agent.velocity.magnitude == 0)
+                {
+                    Vector3 direction = (m_agent.destination - transform.position).normalized;
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), m_turningSpeed * Time.deltaTime);
+                }
+
+                //check for player
+                if (CheckConeOfVIsion(10, 60, 120, 10))
+                    m_chasing = true;
             }
-
-            //smoothly change direction if not moving
-            if (m_agent.velocity.magnitude == 0)
+            else
             {
-                Vector3 direction = (m_agent.destination - transform.position).normalized;
+                m_light.color = m_lightStates[1];
+                Vector3 direction = (m_player.transform.position - transform.position).normalized;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), m_turningSpeed * Time.deltaTime);
+                m_agent.SetDestination(m_player.transform.position);
+                m_agent.Resume();
             }
+        }
+        else
+        {
+            m_agent.Stop();
+            m_agent.velocity = Vector3.zero;
         }
     }
 
@@ -96,4 +123,35 @@ public class WaypointFollower : MonoBehaviour
         m_agent.Resume();
         m_isMoving = true;
     }
+
+    bool CheckConeOfVIsion(float range, float sweepAngle, float distance, float precision)
+    {
+        Vector3 coneEnd = transform.position + transform.forward * distance;
+        float FoV = sweepAngle, radIters = precision, circIters = precision;
+        float radius = Mathf.Tan(FoV / 2 * Mathf.Deg2Rad) * distance;
+
+        //get all possible points
+        for (float r = 0; r < radius; r += radius / radIters)
+        {
+            for (int angle = 0; angle < 360; angle += Mathf.RoundToInt(360 / circIters))
+            {
+                Vector3 dir = Quaternion.AngleAxis(angle, transform.forward) * transform.right;
+                Vector3 p = coneEnd + dir.normalized * r;
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, p - transform.position, out hit, range))
+                {
+                    if (hit.collider.tag == "Player")
+                    {
+                        print("FOUND!");
+                        return true;
+                    }
+                }
+
+                Debug.DrawRay(transform.position, p.normalized * range, Color.white);
+            }
+        }
+
+        return false;
+    }
+
 }

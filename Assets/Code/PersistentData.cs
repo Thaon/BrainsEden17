@@ -9,6 +9,7 @@ public class PersistentData : MonoBehaviour
     #region member variables
 
     public GameState m_gameState = GameState.Playing;
+    public float m_maxPetrol;
 
     #endregion
 

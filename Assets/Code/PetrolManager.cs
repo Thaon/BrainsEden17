@@ -46,13 +46,10 @@ public class PetrolManager : MonoBehaviour
                 m_lastDroppedPetrol = drop;
                 m_lastDroppedPetrol.transform.position = new Vector3(m_lastDroppedPetrol.transform.position.x, 0.1f, m_lastDroppedPetrol.transform.position.z);
             }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-                BurnTrail();
         }
 	}
 
-    void BurnTrail()
+    public void BurnTrail()
     {
         FindObjectOfType<PersistentData>().m_gameState = GameState.Paused; //stop game from continuing on affected objects
         m_lastDroppedPetrol.GetComponent<PetrolDrop>().Burn();

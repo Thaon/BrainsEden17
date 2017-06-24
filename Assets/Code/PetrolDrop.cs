@@ -56,6 +56,14 @@ public class PetrolDrop : MonoBehaviour {
         }
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Enemy")
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     public void Burn()
     {
         //instantiate paticle effect
@@ -79,8 +87,9 @@ public class PetrolDrop : MonoBehaviour {
     {
         yield return new WaitForSeconds(.1f);
 
-        if (m_lastDroppedPetrol != null)
-            m_lastDroppedPetrol.GetComponent<PetrolDrop>().Burn();
+        foreach (Collider coll in Physics.OverlapSphere(transform.position, m_petrolManager.m_petrolDropRadius))
+            if (coll.GetComponent<PetrolDrop>())
+                coll.GetComponent<PetrolDrop>().Burn();
 
         Destroy(this.gameObject);
     }
