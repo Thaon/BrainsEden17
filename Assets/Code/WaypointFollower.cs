@@ -142,7 +142,7 @@ public class WaypointFollower : MonoBehaviour
                 {
                     if (hit.collider.tag == "Player")
                     {
-                        print("FOUND!");
+                        print("enemy spotted you!");
                         return true;
                     }
                 }

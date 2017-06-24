@@ -6,7 +6,7 @@ public class Explosive : MonoBehaviour {
 
     #region member variables
 
-
+    public bool m_isMainTarget = false;
 
     #endregion
 
@@ -22,6 +22,9 @@ public class Explosive : MonoBehaviour {
 
     public void Explode()
     {
+        if (m_isMainTarget)
+            FindObjectOfType<PersistentData>().PlayerWon();
+
         //just destroy for now
         Destroy(this.gameObject);
     }

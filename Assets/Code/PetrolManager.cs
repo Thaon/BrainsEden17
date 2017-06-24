@@ -51,6 +51,7 @@ public class PetrolManager : MonoBehaviour
 
     public void BurnTrail()
     {
+        FindObjectOfType<PersistentData>().CheckIfWinning(FindObjectsOfType<PetrolDrop>().Length * 0.1f);
         FindObjectOfType<PersistentData>().m_gameState = GameState.Paused; //stop game from continuing on affected objects
         m_lastDroppedPetrol.GetComponent<PetrolDrop>().Burn();
     }

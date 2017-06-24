@@ -7,12 +7,13 @@ public class PlayerMovement : MonoBehaviour
 {
     #region member variables
 
-    NavMeshAgent agent;
-
+    private NavMeshAgent agent;
     private PersistentData m_pData;
-    private float m_petrol;
+
+    public float m_petrol;
 
     #endregion
+
     // Use this for initialization
     void Start ()
     {
@@ -44,7 +45,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (agent.velocity.magnitude > 0)
         {
-
+            m_petrol -= Time.deltaTime; //1 unit per second
+            if (m_petrol <= 0)
+            {
+                FindObjectOfType<PersistentData>().PetrolFinished();
+                m_pData.m_gameState = GameState.Paused;
+            }
         }
 	}
 
@@ -52,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.collider.tag == "Enemy")
         {
-            print("Gotcha!");
+            FindObjectOfType<PersistentData>().PlayerCaught();
             FindObjectOfType<PersistentData>().m_gameState = GameState.Paused;
         }
     }
