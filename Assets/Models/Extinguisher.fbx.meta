@@ -10,11 +10,77 @@ ModelImporter:
     100004: ex_rFoot
     100006: ex_top
     100008: //RootNode
+    100010: Extinguisher
+    100012: global_SRT_ctrl
+    100014: global_SRT_ctrl_auto
+    100016: global_SRT_ctrl_offset
+    100018: head_ctrl
+    100020: head_ctrl_auto
+    100022: head_ctrl_offset
+    100024: head_jnt
+    100026: headEnd_jnt
+    100028: hip_ctrl
+    100030: hip_ctrl_auto
+    100032: hip_ctrl_offset
+    100034: hip_jnt
+    100036: l_ball_jnt
+    100038: l_lowerLeg_jnt
+    100040: l_toe_jnt
+    100042: l_upperLeg_jnt
+    100044: neck_ctrl
+    100046: neck_ctrl_auto
+    100048: neck_ctrl_offset
+    100050: neck_jnt
+    100052: r_ball_jnt
+    100054: r_lowerLeg_jnt
+    100056: r_toe_jnt
+    100058: r_upperLeg_jnt
+    100060: spineA_ctrl
+    100062: spineA_ctrl_auto
+    100064: spineA_ctrl_offset
+    100066: spineA_jnt
+    100068: spineB_ctrl
+    100070: spineB_ctrl_auto
+    100072: spineB_ctrl_offset
+    100074: spineB_jnt
     400000: ex_body
     400002: ex_lFoot
     400004: ex_rFoot
     400006: ex_top
     400008: //RootNode
+    400010: Extinguisher
+    400012: global_SRT_ctrl
+    400014: global_SRT_ctrl_auto
+    400016: global_SRT_ctrl_offset
+    400018: head_ctrl
+    400020: head_ctrl_auto
+    400022: head_ctrl_offset
+    400024: head_jnt
+    400026: headEnd_jnt
+    400028: hip_ctrl
+    400030: hip_ctrl_auto
+    400032: hip_ctrl_offset
+    400034: hip_jnt
+    400036: l_ball_jnt
+    400038: l_lowerLeg_jnt
+    400040: l_toe_jnt
+    400042: l_upperLeg_jnt
+    400044: neck_ctrl
+    400046: neck_ctrl_auto
+    400048: neck_ctrl_offset
+    400050: neck_jnt
+    400052: r_ball_jnt
+    400054: r_lowerLeg_jnt
+    400056: r_toe_jnt
+    400058: r_upperLeg_jnt
+    400060: spineA_ctrl
+    400062: spineA_ctrl_auto
+    400064: spineA_ctrl_offset
+    400066: spineA_jnt
+    400068: spineB_ctrl
+    400070: spineB_ctrl_auto
+    400072: spineB_ctrl_offset
+    400074: spineB_jnt
     2300000: ex_body
     2300002: ex_lFoot
     2300004: ex_rFoot
@@ -28,6 +94,10 @@ ModelImporter:
     4300004: ex_body
     4300006: ex_top
     9500000: //RootNode
+    13700000: ex_body
+    13700002: ex_lFoot
+    13700004: ex_rFoot
+    13700006: ex_top
   materials:
     importMaterials: 1
     materialName: 0
